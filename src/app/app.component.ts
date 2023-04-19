@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import WebViewer, {WebViewerInstance} from "@pdftron/webviewer";
-import {Subject} from "rxjs";
+import { AfterViewInit, Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import WebViewer, { WebViewerInstance } from "@pdftron/webviewer";
+import { Subject } from "rxjs";
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent implements AfterViewInit {
 
     WebViewer({
       path: '../lib',
-      initialDoc: '../files/webviewer-demo-annotated.pdf'
+      initialDoc: '../files/custom_fonts.docx'
     }, this.viewer.nativeElement).then(instance => {
       this.wvInstance = instance;
 
@@ -33,6 +33,9 @@ export class AppComponent implements AfterViewInit {
       const { documentViewer, Annotations, annotationManager } = instance.Core;
 
       instance.UI.openElements(['notesPanel']);
+
+      instance.Core.setCustomFontURL(`${window.location.origin}/files/fonts/`);
+      instance.UI.Fonts.addAnnotationFont("Sacramento");
 
       documentViewer.addEventListener('annotationsLoaded', () => {
         console.log('annotations loaded');
